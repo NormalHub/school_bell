@@ -1,0 +1,45 @@
+name: Bilibili Data Crawler
+
+on:
+  schedule:
+    - cron: '0 8 1 * *'   # 每月1号早上8点（UTC时间，对应北京时间16点）
+  workflow_dispatch:       # 支持手动运行
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 安装依赖
+        run: |
+          cd .github/workflows
+          pip install -r requirements.txt
+
+      - name: 运行爬虫脚本
+        run: |
+          cd .github/workflows
+          python bili_stat.py
+
+      - name: 调试：列出文件
+        run: |
+          echo "=== 根目录 ==="
+          ls -la *.json *.html 2>/dev/null || echo "根目录无数据文件"
+          echo "=== workflows目录 ==="
+          ls -la .github/workflows/
+
+      - name: 提交更新
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add bili_stats.json report.html
+          
+          git diff --quiet --staged && echo "无数据更新" || (git commit -m "【月度更新】B站统计数据 $(date +'%Y-%m-%d')" && git push)
