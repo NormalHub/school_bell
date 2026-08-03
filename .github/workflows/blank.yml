@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # 支持手动触发测试
   schedule:
     # UTC 00:00 每月1号 = 北京时间 08:00 每月1号
-    - cron: '25 10 3 * *'
+    - cron: '50 10 3 * *'
 
 jobs:
   run_task:
