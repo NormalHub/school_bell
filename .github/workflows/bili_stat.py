@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 # ====== 配置区 ======
-UID = "你的B站UID"  # 改成你的UID，比如 "12345678"
+UID = "628596718"  # 改成你的UID，比如 "12345678"
 DATA_FILE = "../../bili_stats.json"   # 数据文件（根目录）
 REPORT_FILE = "../../report.html"     # 报告文件（根目录）
 # ===================
